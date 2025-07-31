@@ -4,7 +4,7 @@ from flask import Flask
 app = Flask(__name__)
 
 # your Render Postgres URL
-DATABASE_URL = 'postgresql://ex_database_user:ArMJEGHvOpN87glr90waAZ4IxjJRuaw0@dpg-d25a1sffte5s73c2bje0-a.oregon-postgres.render.com/ex_database'
+DATABASE_URL = 'postgresql://ex_database_user:ArMJEGHvOpN87glr90waAZ4IxjJRuaw0@dpg-d25a1sffte5s73c2bje0-a/ex_database'
 
 @app.route('/')
 def hello_world():
