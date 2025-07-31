@@ -5,7 +5,9 @@ app = Flask(__name__)
 
 # your Render Postgres URL
 DATABASE_URL = (
-    'postgresql://ex_database_user:ArMJEGHvOpN87glr90waAZ4IxjJRuaw0@dpg-d25a1sffte5s73c2bje0-a/ex_database'
+    'postgresql://'
+    'ex_database_user:ArMJEGHvOpN87glr90waAZ4IxjJRuaw0'
+    '@dpg-d25a1sffte5s73c2bje0-a/ex_database'
 )
 
 @app.route('/')
@@ -62,5 +64,39 @@ def db_select():
     cur.close()
     conn.close()
 
+    # build a simple HTML table
     html = '<table border="1">'
-    html += '<tr><th>First</th><th>Last</th><th>City</th><th>Na
+    html += (
+        '<tr>'
+        '<th>First</th>'
+        '<th>Last</th>'
+        '<th>City</th>'
+        '<th>Name</th>'
+        '<th>Number</th>'
+        '</tr>'
+    )
+    for first, last, city, name, number in rows:
+        html += (
+            '<tr>'
+            f'<td>{first}</td>'
+            f'<td>{last}</td>'
+            f'<td>{city}</td>'
+            f'<td>{name}</td>'
+            f'<td>{number}</td>'
+            '</tr>'
+        )
+    html += '</table>'
+    return html
+
+@app.route('/db_drop')
+def db_drop():
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    cur = conn.cursor()
+    cur.execute("DROP TABLE IF EXISTS Basketball;")
+    conn.commit()
+    cur.close()
+    conn.close()
+    return 'Basketball Table Dropped'
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
